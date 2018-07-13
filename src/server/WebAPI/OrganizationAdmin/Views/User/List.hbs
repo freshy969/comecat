@@ -1,0 +1,217 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/admin/home">{{l10n "Home"}}</a>
+    </li>
+    <li class="breadcrumb-item active">{{l10n "User Management"}}</li>
+</ol>
+
+<header class="header bg-ui-general">
+    <div class="header-info">
+        <h1 class="header-title">
+            {{l10n "User Management"}}
+            <small>{{l10n "Number of users in organization:"}}
+                <strong>{{numberOfUsers}}</strong> {{l10n "of max"}}
+                <strong>{{maxUserNumber}}</strong>
+            </small>
+        </h1>
+    </div>
+</header>
+
+<header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16 pl-20">
+    <div class="flexbox align-items-center">
+
+        <form method="post" action="/admin/user/search" id="searchform" class="form-inline">
+
+            {{#if organizationAdmin}}
+                <label class="custom-control custom-checkbox">
+                    {{l10n "Show users without departments"}} &nbsp;
+                    <input type="checkbox" class="custom-control-input" name="showUsersWithoutDepartments" id="chk-showUsersWithoutDepartments"
+                        value="1" {{{checkedIfEqual showUsersWithoutDepartments 1}}} />
+                    <span class="custom-control-indicator"></span>
+                </label>
+
+                <span class="divider-line mx-1"></span>
+
+            {{/if}}
+
+
+            <div class="form-group">
+                <input type="text" name="keyword" id="tb-keyword" class="form-control" value="{{keyword}}" placeholder="{{l10n "type keyword here..."}}">
+            </div>
+            
+            {{#if keyword}}
+                <button type="button" id="btn-clear" name="clear" value="clear" class="btn btn-danger" >{{l10n "Clear"}}</button>
+            {{/if}}
+
+            <button type="submit" class="btn btn-primary btnSearch">{{l10n "Search"}}</button>
+            
+        </form>
+
+    </div>
+
+    <div>
+
+        <button class="btn btn-label btn-primary" onClick="location.href = '/admin/user/add';">
+            <label><i class="fa fa-plus"></i></label> {{l10n "Add New"}}
+        </button>
+
+        <button class="btn btn-label btn-primary" onClick="location.href = '/admin/user/import';">
+            <label><i class="fa fa-arrow-down"></i></label> {{l10n "Import"}}
+        </button>
+
+    </div>
+</header>
+
+<hr />
+
+{{> alertMessage }}
+
+    <div class="row">
+        
+    {{> paginator }}
+
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-body">
+                
+                <table class="table table-hover">
+                    
+                    <thead>
+                        <tr>
+                            <th width="5%"></th>
+                            <th>
+                                {{l10n "Name"}}<br />
+                            </th>
+                            <th width="25%">{{l10n "Groups / Departments"}}</th>
+                            <th width="15%">{{l10n "Email"}}</th>
+                            <th width="15%">{{l10n "Created At"}}</th>
+                            <th width="5%"></th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                    {{#each list}}
+
+                        <tr>
+                            <td> 
+                                <img class="list-thumbnail img-rounded" src="{{showAvatar avatar.thumbnail.nameOnServer _id}}" />
+                            </td>
+                            <td class="list-edit-link">
+                                {{#if showEditDelete}}
+                                    <a href="/admin/user/edit/{{_id}}">
+                                        <strong>{{name}}</strong>
+                                    </a>
+                                {{else}}
+                                    <strong>{{name}}</strong>
+                                {{/if}}  
+                                <br/>
+                                <span class="small">{{_id}}</span>
+                            </td>
+                            <td>{{groupNames}}</td>
+                            <td>{{userid}}</td>
+                            <td>{{formatDate created}}</td>
+                            <td class="text-right" colspan="2">
+
+                                <div class="dropdown table-action">
+
+                                    <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="ti-more-alt rotate-90"></i>
+                                    </span>
+
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 21px; left: 20px; will-change: top, left;">
+                                        {{#if showEditDelete}}  <a class="dropdown-item" href="/admin/user/edit/{{_id}}"><i class="ti-pencil"></i>{{l10n "Edit"}}</a>{{/if}}
+                                        {{#if showEditDelete}}
+                                            {{#unless (checkIfUserIsOrganizationAdmin permission)}}  
+                                                <a class="dropdown-item" href="/admin/user/delete/{{_id}}"><i class="ti-trash"></i>{{l10n "Delete"}}</a>
+                                            {{/unless}}    
+                                        {{/if}}
+                                        <a class="dropdown-item" href="/admin/user/devices/{{_id}}"><i class="ti-mobile"></i>{{l10n "Devices"}}</a>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {{/each}}
+                    </tbody>
+                    
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{{> paginator }}
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">
+            {{l10n "Reset Device"}}
+        </h4>
+      </div>
+      <div class="modal-body">
+          <strong>{{l10n "Please confirm and press Procees to proceed"}}</strong>
+          <p></p>
+          <ul>
+              <li>{{l10n "The user will be logged out from all devices."}}</li>
+          </ul>
+
+          <p>{{l10n "If multiple device option is not allowed in settings"}}</p>
+
+          <ul>
+              <li>{{l10n "Cache will be wiped from current device when anyone tried to sign in again from the device."}}</li>
+              <li>{{l10n "The device will be added to block list."}}</li>
+              <li>{{l10n "The user can sign in again with another device."}}</li>
+          </ul>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{l10n "Close"}}</button>
+        <a id="btnResetDevice" href="#" class="btn btn-primary">{{l10n "Procees"}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#btn-clear').on('click', function () {
+
+            $('#tb-keyword').val('');
+            $('#searchform').submit();
+
+        });
+
+        $('#chk-showUsersWithoutDepartments').on('change', function () {
+
+            $('#searchform').submit();
+
+        });
+
+    });
+
+    function openModal(id) {
+
+        $('#btnResetDevice').attr('href', "/admin/user/resetDevice/" + id);
+
+        $('#myModal').modal({
+            keyboard: false
+        })
+
+    }
+
+</script>

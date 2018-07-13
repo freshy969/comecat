@@ -1,0 +1,51 @@
+
+// Core variables and mixins
+//
+@import "./themify-icons/themify-icons.css";
+@import "./fontawesome/font-awesome.scss";
+@import "./ionicons/scss/ionicons.scss";
+@import "./bootstrap/bootstrap.scss";
+@import "./template/app.scss";
+@import "./highlight/default";
+@import "./highlight/vs2015";
+@import "./sweetalert/sweetalert";
+
+@import "./chat";
+@import "./calling";
+@import "./newroom";
+@import "./search";
+@import "./favorite";
+@import "./profile";
+@import "./integration";
+@import "./password";
+@import "./notification";
+@import "./note";
+@import "./signin";
+@import "./login";
+@import "./settings";
+
+.scrollable{
+    -webkit-overflow-scrolling: touch;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.hidden{
+    display: none;
+}
+.sidebar-header {
+    background-color: #179E9E;
+}
+
+.help{
+    font-size: 16px;
+    color: #fdd501;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.beta-icon {
+    margin-right: 10px;
+}

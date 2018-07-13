@@ -1,0 +1,115 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/admin/home">{{l10n "Home"}}</a>
+    </li>
+    <li class="breadcrumb-item active">{{l10n "API Keys"}}</li>
+</ol>
+
+<header class="header bg-ui-general">
+    <div class="header-info">
+        <h1 class="header-title">
+            {{l10n "API Keys"}}
+        </h1>
+    </div>
+</header>
+
+<hr /> {{> alertMessage }}
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <table class="table table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                {{l10n "State"}}
+                                <br />
+                            </th>
+                            <th>
+                                {{l10n "API Key"}}
+                                <br />
+                            </th>
+                            <th width="25%">{{l10n "Created At"}}</th>
+                            <th width="5%">
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {{#each list}}
+
+                            <tr {{#if state}} class="enabled" {{else}} class="bg-danger" {{/if}}>
+                                <td>
+                                    {{#if state}}
+                                        <strong>Enabled</strong>
+                                    {{else}}
+                                        <strong>Disabled</strong>
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{key}}
+                                </td>
+                                <td width="25%">
+                                    {{formatDateTime created}}
+                                </td>
+                                <th width="15%" class="text-right">
+
+                                    <div class="dropdown table-action">
+
+                                        <span class="dropdown-toggle no-caret hover-primary" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="ti-more-alt rotate-90"></i>
+                                        </span>
+
+                                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 21px; left: 20px; will-change: top, left;">
+
+                                            {{#if state}}
+
+                                                <a class="dropdown-item" href="/admin/apikey/disable/{{_id}}" onclick="return confirm('{{l10n "Are you sure to disable this key ?"}}')">
+                                                    <i class="ti-close"></i>{{l10n "Disable"}}</a>
+
+                                            {{else}}
+
+                                                <a class="dropdown-item" href="/admin/apikey/enable/{{_id}}" onclick="return confirm('{{l10n "Are you sure to enable this key ?"}}')">
+                                                    <i class="ti-bolt"></i>{{l10n "Enable"}}</a>
+
+                                            {{/if}}
+
+                                            <a class="dropdown-item" href="/admin/apikey/delete/{{_id}}" onclick="return confirm('{{l10n "Are you sure to delete this key ?"}}')">
+                                                <i class="ti-trash"></i>{{l10n "Delete"}}</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </th>
+                            </tr>
+
+                        {{/each}}
+
+                        <tr>
+                            <td colspan="4" class="text-right">
+                                <form id="newapiform" action="/admin/apikey/add" method="post">
+                                    <button type="submit" class="btn btn-primary">{{l10n "Add New"}}</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

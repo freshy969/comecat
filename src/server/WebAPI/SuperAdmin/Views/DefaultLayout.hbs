@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Responsive admin dashboard and web application ui kit. ">
+  <meta name="keywords" content="blank, starter">
+
+  <title>{{l10n "ComeCat Service Owner"}}</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i" rel="stylesheet">
+
+  <!-- Styles -->
+  <link href="{{AssetURL}}/css/core.min.css" rel="stylesheet">
+  <link href="{{AssetURL}}/css/app.min.css" rel="stylesheet">
+  <link href="{{AssetURL}}/css/style.min.css" rel="stylesheet">
+  <link href="{{AssetURL}}/css/custom.css" rel="stylesheet">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="/assets/favicon/site.webmanifest">
+  <link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+
+  <script src="{{AssetURL}}/js/jquery-3.2.1.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="spinner-dots">
+      <span class="dot1"></span>
+      <span class="dot2"></span>
+      <span class="dot3"></span>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar sidebar-icons-right sidebar-icons-boxed sidebar-expand-lg">
+    <header class="sidebar-header">
+      <span class="logo pt-50 pb-50 pr-100">
+        <a href="/owner/home">
+          <img src="{{AssetURL}}/img/logo-light-owner.png" alt="logo">
+        </a>
+      </span>
+      <span class="sidebar-toggle-fold"></span>
+    </header>
+
+    <nav class="sidebar-navigation">
+      <ul class="menu">
+
+        <li class="menu-item {{{printIfEqual page 'home' 'active'}}}">
+          <a class="menu-link" href="/owner/home">
+            <span class="icon fa fa-tachometer"></span>
+            <span class="title">{{l10n "Dashboard"}}</span>
+          </a>
+        </li>
+
+        <li class="menu-category">{{l10n "Credentials & Permission"}}</li>
+
+        <li class="menu-item {{{printIfEqual page 'organization-list' 'active'}}}">
+          <a class="menu-link" href="/owner/organization/list">
+            <span class="icon fa fa-user"></span>
+            <span class="title">{{l10n "Organizations"}}</span>
+          </a>
+        </li>
+
+        <li class="menu-category">{{l10n "Settings"}}</li>
+
+        <li class="menu-item {{{printIfEqual page 'sticker-list' 'active'}}}">
+          <a class="menu-link" href="/owner/sticker/list">
+            <span class="icon fa fa-smile-o"></span>
+            <span class="title">{{l10n "Stickers"}}</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+  </aside>
+  <!-- END Sidebar -->
+
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-btn sidebar-toggler">
+        <i>&#9776;</i>
+      </span>
+    </div>
+
+    <div class="topbar-right">
+
+      <ul class="topbar-btns">
+        <li class="dropdown">
+          <span class="topbar-btn" data-toggle="dropdown" aria-expanded="true">
+            <img class="avatar" src="/api/v2/avatar/user/{{avatarFileId}}" alt="..." />
+          </span>
+          <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; top: 65px; left: -120px; will-change: top, left;">
+            <a class="dropdown-item" href="/owner/signout">
+              <i class="ti-power-off"></i>{{l10n "Logout"}}
+            </a>
+          </div>
+        </li>
+
+      </ul>
+
+    </div>
+
+  </header>
+  <!-- END Topbar -->
+
+
+  <!-- Main container -->
+  <main class="main-container">
+    <div class="main-content">
+
+      {{{body}}}
+
+    </div>
+    <!--/.main-content -->
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="text-center text-md-left">Copyright © 2018
+            <a href="http://clover.studio">Clover Studio</a>. All rights reserved.</p>
+        </div>
+
+        <div class="col-md-6">
+          <ul class="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
+
+            <li class="nav-item">
+              <a class="nav-link" href="https://itunes.apple.com/jp/app/spika-for-business/id1143027894?mt=8" target="_blank">{{l10n "iOS App"}}</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="https://play.google.com/store/apps/details?id=com.clover_studio.spikaenterprisev2&hl=en" target="_blank">{{l10n "Android App"}}</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_blank">{{l10n "WebClient"}}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../help/articles.html">Documentation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../help/faq.html">Help</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <!-- END Footer -->
+
+  </main>
+  <!-- END Main container -->
+
+  <!-- Global quickview -->
+  <div id="qv-global" class="quickview" data-url="{{AssetURL}}/data/quickview-global.html">
+    <div class="spinner-linear">
+      <div class="line"></div>
+    </div>
+  </div>
+  <!-- END Global quickview -->
+
+  <!-- Scripts -->
+  <script src="{{AssetURL}}/js/core.min.js"></script>
+  <script src="{{AssetURL}}/js/app.min.js"></script>
+  <script src="{{AssetURL}}/js/script.min.js"></script>
+
+</body>
+
+</html>

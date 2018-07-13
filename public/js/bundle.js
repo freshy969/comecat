@@ -1,0 +1,1 @@
+console.error("Error: Cannot find module '/Users/kenyasue/Documents/Projects/comecat_server/src/client/js/main.js' from '/Users/kenyasue/Documents/Projects/comecat_server'");

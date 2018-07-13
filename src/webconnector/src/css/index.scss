@@ -1,0 +1,600 @@
+@import "./bootstrap/bootstrap.scss";
+@import "./colors.scss";
+@import "./animate.scss";
+@import "./typing.scss";
+
+$inputHeight: 50px;
+$headerHeight: 230px;
+$headerHeightMobile: 130px;
+$windowMargin: 50px;
+
+html, body{
+    margin:0;
+    padding:0;
+}
+
+html,
+body,
+#comecat-web-container,
+.background{
+    height:100%;
+}
+
+.background{
+    background-size: cover;
+    background-position: center; 
+    div{
+        padding: 0px;
+    }
+
+}
+
+#chatbox{
+    min-height:0;
+    border: 1px solid $cl-mainborder;
+    border-radius: 10px;
+    height: calc(100vh - #{$windowMargin} * 2);   
+    overflow: hidden;
+    margin: 0px;
+    margin-top: $windowMargin;
+    padding: 0px;
+    font-size: 15px;
+    background-color: transparent;
+    color: $cl-text;
+    position: relative;
+    display:flex;
+    flex-direction: column;
+    
+    &.iframe{
+
+        border-radius: 10px;
+        
+        @media (max-width: 576px) {
+            & { 
+                border-radius: 10px;
+            }
+        }
+
+    }
+
+    @media (max-width: 576px) {
+        & {
+            border: none;
+            margin-top: 0px;
+            height: 100%;  
+            border-radius: 0px;
+            width: 100vw;
+            
+        }
+    }
+
+    .nameinputform{
+        transition: top 1.0s ease;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255,0.95);
+        z-index: 1001;
+        overflow-y: auto;
+        padding: 25px 10px 10px 30px;
+
+        &.hide{
+            top: 3000px;
+        }
+
+        h2{
+            font-size: 25px;
+        }
+
+        input{ 
+            display: block;
+            width: 70%;
+            padding: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #999;
+
+            &.err{
+                border: 1px solid #c0392b;
+            }
+
+        }
+
+        small.err{
+            margin-top: -15px;
+            margin-bottom: 15px;
+            color: #c0392b;
+            display: block;
+        }
+
+        button {
+            padding:7px 13px;
+            text-align:center;
+            background:#eee;
+            color:#333;
+            white-space: nowrap;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            border: 1px solid #333;
+            cursor: pointer;
+        
+        }
+        
+        button:active {
+            vertical-align: top;
+            padding: 8px 12px 6px 14px;
+        }
+
+        button:hover{
+            background-color: #efefef;
+        }
+
+        img{
+            width: 20px;
+        }
+
+        .social-container {
+            height: 60px;
+            background-color: #fff;
+            text-align: center;
+        
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50px;
+                margin: 10px;
+
+                @media (max-width: 576px) {
+                    & {
+                        margin: 5px;
+                    }
+                }
+
+            }
+            
+        }
+
+        .checkbox{
+            display: inline;
+            width: 20px;
+        }
+
+    }
+
+    .header{
+        background-color: $cl-headerbg;
+        padding: 20px;
+        text-align: center;
+        color: $cl-textlight;
+        overflow-y: hidden;  
+        background-size: cover;
+        height: $headerHeight;
+        overflow: hidden;
+
+        @media (max-width: 576px) {
+            & {
+                text-align: left;
+                height: $headerHeightMobile;
+            }
+        }
+
+        .agentavatar{
+            border-radius: 1000px;
+            border: 3px solid #fff;
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: auto;
+            margin-bottom: 10px;
+
+            @media (max-width: 576px) {
+                & {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+
+        }
+
+        .description{
+
+            padding:10px;
+            
+            .agentdescription{
+                margin-left: 30px;
+                margin-right: 30px;
+
+                @media (max-width: 576px) {
+                    & {
+                        margin-left: 0px;
+                        margin-right: 0px;
+                    }
+                }
+
+            }
+            
+            .agentname{
+                font-weight: bold;
+            }
+
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+    }
+
+    .conversation{
+        min-height:0;
+        position: relative;
+        padding: 0px;
+        margin: 0px;
+        background-image: url('../image/conversationbg.png');
+        padding-bottom: $inputHeight;
+        flex:1;
+
+        .shadow {
+            width: 100%;
+            position: absolute;
+            height: 20px;
+            left: 0px;
+            top: 0px;
+            z-index: 1000;
+            background: -moz-linear-gradient(270deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* ff3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0,0,0,0.25)), color-stop(100%, rgba(0,0,0,0))); /* safari4+,chrome */
+            background: -webkit-linear-gradient(270deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* safari5.1+,chrome10+ */
+            background: -o-linear-gradient(270deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* opera 11.10+ */
+            background: -ms-linear-gradient(270deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* ie10+ */
+            background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* w3c */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=0 ); /* ie6-9 */
+        }
+
+        .conversation-col{
+            padding: 0px 10px 0px 20px;
+            margin: 0px;
+            height: 100%;
+
+
+            overflow-x: none;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+
+            .conversation-container{
+
+                .bubble{
+
+                    margin-top: 15px;
+                    margin-bottom: 15px;
+                    margin-right: 15px;
+
+                    .date-container{
+                        font-size: 12px;
+                        font-style: italic;
+                    }
+
+                    &.text,&.typing {
+
+                        .avatar-container {
+        
+                            text-align: center;
+        
+                            .avatar{
+                                border-radius: 50px;
+                                width: 60%;
+                            }
+        
+                        }
+        
+                        .text-container{
+                            background: $cl-bubblebg;
+                            padding:15px;
+                            -webkit-box-shadow: 0px 10px 12px -1px rgba(0,0,0,0.11);
+                            -moz-box-shadow: 0px 10px 12px -1px rgba(0,0,0,0.11);
+                            box-shadow: 0px 10px 12px -1px rgba(0,0,0,0.11);
+                            
+                        }
+        
+                        .typing-container{
+                            padding:15px;
+                            text-align: left;                        
+                        }
+
+                    }
+                    
+                    &.text.mine{
+                        transition: all 0.5s ease;
+                        opacity: 1.0;
+                        margin-right: 0px;
+                        margin-left: 15px;
+
+                        .text-container{
+                            background: $cl-mybubble;
+                        }
+
+                        &.sending{
+                            opacity: 0.5;
+                        }
+
+                        &.sent{
+                            animation-name: FadeIn;
+                            animation-duration: 0.5s;
+                        }
+
+                        @keyframes FadeIn {
+                            0% {
+                                opacity: 0.5;
+                            }
+                            
+                            100% {
+                                opacity: 1;
+                            }
+                        }
+                        
+                    }
+
+                    &.file {
+
+                        color: $cl-text;
+                        text-decoration: none;
+
+                        .avatar-container {
+        
+                            text-align: center;
+        
+                            .avatar{
+                                border-radius: 50px;
+                                width: 60%;
+                            }
+        
+                        }
+        
+                        .text-container{
+                            background: $cl-bubblebg;
+                            padding:15px;
+                            -webkit-box-shadow: 0px 10px 12px -1px rgba(0,0,0,0.11);
+                            -moz-box-shadow: 0px 10px 12px -1px rgba(0,0,0,0.11);
+                            box-shadow: 0px 10px 12px -1px rgba(0,0,0,0.11);
+                            
+                        }
+                        
+                        .icon-container{
+
+                            background: $cl-bubblebg;
+                            padding:15px;
+
+                            .file{
+                                width: 25px;
+                                margin-right: 10px;
+                                opacity: 0.5;
+                            }
+
+                        }
+                        
+                        .typing-container{
+                            padding:15px;
+                            text-align: left;                        
+                        }
+
+                    }
+                    
+                    &.file.mine{
+                        transition: all 0.5s ease;
+                        opacity: 1.0;
+                        margin-right: 0px;
+                        margin-left: 15px;
+
+                        .text-container{
+                            background: $cl-mybubble;
+                        }
+
+                        &.sent{
+                            animation-name: FadeIn;
+                            animation-duration: 0.5s;
+                        }
+
+                        @keyframes FadeIn {
+                            0% {
+                                opacity: 0.5;
+                            }
+                            
+                            100% {
+                                opacity: 1;
+                            }
+                        }
+
+                        .progressbar-container{
+                            position: relative;
+                            height: 26px;
+
+                            .progress-bar{
+                                position: absolute;
+                                z-index: 100;
+                                top:0px;
+                                left: 0px;
+                                height: 100%;
+                                padding:2px;
+                                overflow: hidden;
+                                color: #fff;
+                            }
+
+                            .progress-filename{
+                                padding:2px;
+                                color: #000;
+                                position: absolute;
+                                z-index: 101;
+                                top:0px;
+                                left: 0px;
+                                height: 100%;
+                            }
+                        }
+                        
+                    }
+
+
+                    &.image {
+
+                        margin-left: 15px;
+
+                        .image-container {
+                            background-color: $cl-bubblebg;
+                            padding: 5px;
+                            width: calc(60% - #{30px});
+                            text-align: center;
+
+                            img.image{
+                                cursor: pointer;
+                            }
+
+
+                            .filename-container{
+                                
+                                white-space: nowrap;
+                                padding:5px;
+                                width: 100%;
+                                overflow: hidden;
+                                text-align: left;
+                                margin-top: 5px;
+
+                                img{
+                                    border-radius: 50px;
+                                    max-width: 30px;
+                                    margin-right: 10px;
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    &.filesending{
+
+                        position: relative;
+                        width: 100%;
+                        height: 30px;
+                        text-align: center;
+                        padding: 10px;
+                        margin-right: 15px;
+                        margin-bottom: 15px;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+    .input-container{
+
+        border-top: 1px solid $cl-inputborder;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: $inputHeight;
+        background-color: $cl-inputbg;
+        padding: 0px;
+        margin: 0px;
+        .input-col{
+
+            padding: 0px;
+            margin: 0px;
+            position: relative;
+
+            input{
+                padding: 5px;
+                width: 100%;
+                height: $inputHeight;
+                display: block;
+                background-color: transparent;
+                border: none;
+                outline: none;
+                padding-left: 20px;
+            }
+
+            .attachment {
+                position: absolute;
+                right: 15px;
+                top: 15px;
+                width: 20px;
+                cursor: pointer;
+                opacity: 0.5;
+            }
+
+        }
+
+    }
+    
+}
+
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 15px;
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 50px;
+}
+.loading-bar {
+  display: inline-block;
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  animation: loading 1s ease-in-out infinite;
+}
+.loading-bar:nth-child(1) {
+  background-color: #3498db;
+  animation-delay: 0;
+}
+.loading-bar:nth-child(2) {
+  background-color: #c0392b;
+  animation-delay: 0.09s;
+}
+.loading-bar:nth-child(3) {
+  background-color: #f1c40f;
+  animation-delay: .18s;
+}
+.loading-bar:nth-child(4) {
+  background-color: #27ae60;
+  animation-delay: .27s;
+}
+
+#chatbox.hide {
+    display: none
+}
+
+@keyframes loading {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1, 2.2);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+input[type="color"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+select:focus,
+textarea {
+  font-size: 16px;
+}

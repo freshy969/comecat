@@ -1,0 +1,136 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/admin/home">{{l10n "Home"}}</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="/admin/department/list">{{l10n "Department Management"}}</a>
+    </li>
+    <li class="breadcrumb-item active">
+        {{l10n "Department Members"}}
+    </li>
+</ol>
+
+<header class="header bg-ui-general">
+    <div class="header-info">
+        <h1 class="header-title">
+            {{l10n "Department Members"}}
+            <small>{{departmentName}}</small>
+        </h1>
+
+    </div>
+</header>
+
+<header class="flexbox align-items-center media-list-header bg-transparent b-0 py-16 pl-20">
+    <div class="flexbox align-items-center">
+
+        <form method="post" action="/admin/department/userlist/search/{{departmentId}}" id="searchform" class="form-inline">
+
+            <div class="form-group">
+                <input type="text" name="keyword" id="tb-keyword" class="form-control" value="{{keyword}}" placeholder="{{l10n "type keyword here..."}}">
+            </div>
+
+            {{#if keyword}}
+                <button type="button" id="btn-clear" name="clear" value="clear" class="btn btn-danger">{{l10n "Clear"}}</button>
+            {{/if}}
+
+            <button type="submit" class="btn btn-primary btnSearch">{{l10n "Search"}}</button>
+
+        </form>
+
+    </div>
+
+    <div>
+
+        <button class="btn btn-label btn-primary" onClick="location.href = '/admin/department/userlist/add/{{departmentId}}';">
+            <label>
+                <i class="fa fa-plus"></i>
+            </label> {{l10n "Add New User"}}
+        </button>
+
+        <button class="btn btn-label btn-primary" onClick="location.href = '/admin/department/userlistadd/{{departmentId}}';">
+            <label>
+                <i class="fa fa-plus"></i>
+            </label> {{l10n "Add Department Members"}}
+        </button>
+
+    </div>
+</header>
+
+<hr /> {{> alertMessage }}
+
+<div class="row">
+
+    {{> paginator }}
+
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-body">
+
+
+                <table class="table table-hover">
+
+                    <thead>
+                        <tr>
+                            <th width="5%"></th>
+                            <th>
+                                {{l10n "Name"}}
+                                <br />
+                            </th>
+                            <th width="15%">{{l10n "User ID"}}</th>
+                            <th width="15%">{{l10n "Created At"}}</th>
+                            <th width="5%"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {{#each list}}
+
+                            <tr>
+                                <td>
+                                    <img class="list-thumbnail img-rounded" src="{{showAvatar avatar.thumbnail.nameOnServer _id}}" />
+                                </td>
+                                <td>
+                                    <strong>{{name}}</strong>
+                                    <br />
+                                    <span class="small">{{_id}}</span>
+                                </td>
+                                <td>{{userid}}</td>
+                                <td>{{formatDate created}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick='location.href="/admin/department/userlist/delete/{{../departmentId}}/{{_id}}"'>{{l10n "Delete"}}</button>
+                                </td>
+                            </tr>
+
+                        {{/each}}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{> paginator }}
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#btn-clear').on('click', function () {
+
+            $('#tb-keyword').val('');
+            $('#searchform').submit();
+
+        });
+
+    });
+
+</script>

@@ -1,0 +1,104 @@
+<div class="row no-gutters min-h-fullscreen bg-white">
+    <div class="col-md-6 col-lg-7 col-xl-8 d-none d-md-block bg-img" style="background-image: url({{AssetURL}}/img/forest.jpg)"
+        data-overlay="5">
+
+        <div class="row h-100 pl-50">
+            <div class="col-md-10 col-lg-8 align-self-end">
+                <img src="{{AssetURL}}/img/comecatLogin.png" alt="...">
+                <br>
+                <br>
+                <br>
+                <h4 class="text-white">{{l10n "Ultimate Chat Platoform to extend your business."}}</h4>
+                <p class="text-white">
+                    {{l10n "Come.cat is platform for all your communication. Stay connected with your teams and customers with one app."}}
+                </p>
+                <br>
+                <br>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6 col-lg-5 col-xl-4 align-self-center">
+        <div class="px-80 py-30">
+            <h4>{{l10n "Come Cat: Owner"}}</h4>
+            <p>
+                <small>{{l10n "Sign into your account"}}</small>
+            </p>
+            <br> {{> alertMessage }}
+
+            <form id="mainform" method="post" class="form-type-material" onsubmit="return onSubmit()">
+
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" id="text-name" type="text" value="{{username}}" placeholder="{{l10n "Username"}}">
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" id="text-password" type="password" value="{{password}}" placeholder="{{l10n "Password"}}">
+                </div>
+
+                <div class="form-group flexbox">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="chkbox-remember">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">{{l10n "Remember password"}}</span>
+                    </label>
+
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-bold btn-block btn-primary" type="submit">{{l10n "Login"}}</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var savedUserName = localStorage.getItem("spadmin-loginname");
+        var savedPassword = localStorage.getItem("spadmin-loginpassword");
+
+        var nameEnabled = false;
+        var passwordEnabled = false;
+
+        if (savedUserName && savedUserName != "") {
+            $('#text-name').val(savedUserName);
+            nameEnabled = true;
+        }
+
+        if (savedPassword && savedPassword != "") {
+            $('#text-password').val(savedPassword);
+            passwordEnabled = true;
+        }
+
+        if (nameEnabled && passwordEnabled)
+            $("#chkbox-remember").attr('checked', 'checked');
+
+    });
+
+    function onSubmit() {
+
+        if (typeof (Storage) === "undefined")
+            return false;
+
+        if ($("#chkbox-remember").is(':checked')) {
+
+            localStorage.setItem("spadmin-loginname", $('#text-name').val());
+            localStorage.setItem("spadmin-loginpassword", $('#text-password').val());
+
+        } else {
+
+            localStorage.setItem("spadmin-loginname", "");
+            localStorage.setItem("spadmin-loginpassword", "");
+
+        }
+
+        return true;
+    }
+
+</script>

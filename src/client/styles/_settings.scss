@@ -1,0 +1,33 @@
+.layout-chat {
+
+    .spinner-linear.settings{
+        
+        position: fixed;
+        z-index: 1000;
+        left: 380px;
+        top: 64px;
+        width: calc(100vw - 380px);
+
+        @media only screen and (max-width: map-get($grid-breakpoints, lg)) {
+            left: 0px;
+            top: 64px;
+            width: calc(100vw - 0px);
+        }
+        
+    }
+
+    .main-content.settings{
+
+        margin-top: -30px;
+
+        .selector{
+            margin-bottom: 15px;
+        }
+
+        .basic-info{
+            margin-bottom: 15px;
+        }
+    
+    }
+
+}

@@ -1,0 +1,48 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/admin/home">{{l10n "Home"}}</a>
+    </li>
+    <li class="breadcrumb-item active">{{l10n "Department Management"}}</li>
+</ol>
+
+<header class="header bg-ui-general">
+    <div class="header-info">
+        <h1 class="header-title">
+            {{l10n "Department Management"}}
+            <small>{{l10n "Number of users in organization:"}}
+                <strong>{{numberOfGroups}}</strong> {{l10n "of max"}}
+                <strong>{{maxGroupNumber}}</strong>
+            </small>
+        </h1>
+    </div>
+</header>
+
+<header class="text-right media-list-header bg-transparent b-0 py-16 pl-20">
+
+    <button class="btn btn-label btn-primary" onClick="location.href = '/admin/department/add';">
+        <label>
+            <i class="fa fa-plus"></i>
+        </label> {{l10n "Add New"}}
+    </button>
+
+</header>
+
+<hr /> {{> alertMessage }}
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                {{{createTreeGridDepartment list}}}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

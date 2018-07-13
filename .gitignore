@@ -1,0 +1,43 @@
+# third party modules
+node_modules
+
+# generated files
+public/uploads
+public/doc/JS
+public/doc/API
+public/dist
+public/*.svg
+public/*.eot
+public/*.mp3
+public/*.woff
+public/*.woff2
+public/*.ttf
+public/index.html
+public/*.js
+public/*.css
+public/*.json
+
+public/c/*.svg
+public/c/*.eot
+public/c/*.jpg
+public/c/*.png
+public/c/*.gif
+public/c/*.woff
+public/c/*.woff2
+public/c/*.ttf
+public/c/index.html
+public/c/*.js
+public/c/*.css
+public/c/*.json
+
+
+hostid
+nohup.out
+out
+doc/doc.come.cat/vendor
+
+# configuration
+src/server/lib/init.js
+src/server/assets/certificates/**
+
+.vscode
