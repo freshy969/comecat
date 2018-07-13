@@ -1,6 +1,8 @@
 # ComeCat
 
-ComeCat is universal chat solution. What you can do with ComeCat is 
+ComeCat is open messegner for team chat and for live chat support.
+
+## Features
 
  - Team Chat
  - Live Chat
