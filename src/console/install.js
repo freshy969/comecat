@@ -61,12 +61,9 @@ async function generateOrganization() {
         });
 
         org.save(function (err, saveResult) {
-
             var organization = saveResult.toObject();
             res(organization);
-
         });
-
 
     });
 
@@ -96,8 +93,8 @@ async function generateUser(org, username, password, avatarImage) {
 
             (image) => {
 
-                fs.renameSync(init.uploadPath + "/" + thumbname + ".png", init.uploadPath + thumbname);
-                fs.copySync(init.uploadPath + thumbname, init.uploadPath + filename);
+                fs.renameSync(init.uploadPath + "/" + thumbname + ".png", init.uploadPath + "/" + thumbname);
+                fs.copySync(init.uploadPath + "/" + thumbname, init.uploadPath + "/" + filename);
 
                 var model = new userModel({
                     organizationId: org._id.toString(),
