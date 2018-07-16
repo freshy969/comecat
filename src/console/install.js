@@ -38,6 +38,52 @@ async function checkFolder() {
 
 }
 
+
+async function checkOrganization() {
+
+    return new Promise((res, rej) => {
+
+        const model = OrganizationModel.get();
+
+        if (!init.personamOrganizationName || init.personamOrganizationName == "") {
+            return rej(" Wrong config. Please check personamOrganizationName.")
+        }
+
+        model.findOne({
+            organizationId: init.personamOrganizationName
+        }, (err, findResult) => {
+
+            if (err)
+                rej(err);
+
+            res(findResult);
+
+        });
+
+    });
+
+}
+
+async function checkUser(username) {
+
+    return new Promise((res, rej) => {
+
+        const model = UserModel.get();
+        model.findOne({
+            userid: username
+        }, (err, findResult) => {
+
+            if (err)
+                rej(err);
+
+            res(findResult);
+
+        });
+
+    });
+
+}
+
 async function generateOrganization() {
 
     return new Promise((res, rej) => {
@@ -60,7 +106,7 @@ async function generateOrganization() {
             status: 1
         });
 
-        org.save(function (err, saveResult) {
+        org.save((err, saveResult) => {
             var organization = saveResult.toObject();
             res(organization);
         });
@@ -83,7 +129,6 @@ async function generateUser(org, username, password, avatarImage) {
         }
 
         // get organization
-
 
         easyimg.thumbnail({
             src: originalImagePath,
@@ -211,7 +256,12 @@ async function connectDB() {
     console.log('Database connection -- OK .'.yellow);
 
 
-    let org = null;
+    let org = await checkOrganization();
+    if (org) {
+        const message = "Please delete organization " + org._id + " and start installer again";
+        console.error(message.red);
+        process.exit(1);
+    }
 
     try {
         org = await generateOrganization()
@@ -229,14 +279,19 @@ async function connectDB() {
     console.log('Upload folder write permission -- OK .'.yellow);
     console.log('');
 
+    let adminUser = await checkUser('admin');
+    if (adminUser) {
+        const message = "Please delete user " + adminUser._id + " and start installer again";
+        console.error(message.red);
+        process.exit(1);
+    }
+
     const adminPassword = await scanfPassword();
 
     process.stdout.write("Your password is ".green);
     process.stdout.write(adminPassword + "\n\n");
-
     process.stdout.write('Generating admin...'.green);
 
-    let adminUser = null;
     try {
         adminUser = await generateUser(org, "admin", adminPassword, "thecat.png");
     } catch (e) {
@@ -253,7 +308,13 @@ async function connectDB() {
 
     process.stdout.write('Generating robot user...'.green);
 
-    let robotUser = null;
+    let robotUser = await checkUser('robot');
+    if (robotUser) {
+        const message = "Please delete user " + robotUser._id + " and start installer again";
+        console.error(message.red);
+        process.exit(1);
+    }
+
     try {
         robotUser = await generateUser(org, "robot", "robot", "robocat.png");
     } catch (e) {
