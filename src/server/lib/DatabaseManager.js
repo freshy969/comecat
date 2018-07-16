@@ -9,22 +9,22 @@ var Conf = require('./init.js');
 
 var DatabaseManager = {
 
-    isDatabaseReady : false,
+    isDatabaseReady: false,
     isRedisReady: false,
-    redisClient:null,
-    loadedModels : {},
-    init: function(callBack){
-                
-		var self = this;
+    redisClient: null,
+    loadedModels: {},
+    init: function (callBack) {
+
+        var self = this;
 
         // Connection to chat database
-        console.log("Connecting mongoDB " + Conf.databaseUrl);
-        
-        try{
-            
-            if(!mongoose.connection.readyState){
+        //console.log("Connecting mongoDB " + Conf.databaseUrl);
 
-                mongoose.connect(Conf.databaseUrl, function(err){
+        try {
+
+            if (!mongoose.connection.readyState) {
+
+                mongoose.connect(Conf.databaseUrl, function (err) {
 
                     if (err) {
 
@@ -33,32 +33,32 @@ var DatabaseManager = {
                     } else {
 
                         self.setupRedis(callBack);
-                        
+
                     }
-                    
+
                 });
 
             } else {
 
                 // Defining a schema
                 self.setupRedis(callBack);
-                        
+
             }
-            
-        } catch(ex){
 
-	        console.log("Failed to connect MongoDB!");
+        } catch (ex) {
 
-	        throw ex;
+            console.log("Failed to connect MongoDB!");
+
+            throw ex;
 
         }
 
     },
 
-    setupRedis : function(callBack){
-        
+    setupRedis: function (callBack) {
+
         var self = this;
-        
+
         self.isDatabaseReady = true;
         self.redisClient = redis.createClient(Conf.redis);
 
@@ -69,27 +69,27 @@ var DatabaseManager = {
         self.redisClient.on("ready", function (err) {
 
             self.isRedisReady = true;
-            
-            if(callBack){
+
+            if (callBack) {
                 callBack(self.isDatabaseReady);
             }
-            
-        });
-        
-    },
-    
-    getModel : function(modelName){
 
-        if(!this.isDatabaseReady)
+        });
+
+    },
+
+    getModel: function (modelName) {
+
+        if (!this.isDatabaseReady)
             return null;
 
-        if(!_.isEmpty(this.loadedModels[modelName]))
+        if (!_.isEmpty(this.loadedModels[modelName]))
             return this.loadedModels[modelName];
 
 
         var model = require('../Models/' + modelName);
 
-        if(model){
+        if (model) {
 
             var model = new model();
 
@@ -104,131 +104,131 @@ var DatabaseManager = {
             return null;
 
     },
-    
-    redisDel : function(key){
-        
+
+    redisDel: function (key) {
+
         this.redisClient.del(key);
-        
-    },
-    redisIncr : function(key){
 
-        this.redisClient.incr(key , redis.print);
-        
+    },
+    redisIncr: function (key) {
+
+        this.redisClient.incr(key, redis.print);
+
     },
 
-    
-    redisDecr : function(key){
-        
-        this.redisClient.decr(key , redis.print);
-        
+
+    redisDecr: function (key) {
+
+        this.redisClient.decr(key, redis.print);
+
     },
-     
-    redisSave : function(key,value){
-        
+
+    redisSave: function (key, value) {
+
         var saveValue = JSON.stringify(value);
-        
-        this.redisClient.set(key, saveValue , redis.print);
-        
+
+        this.redisClient.set(key, saveValue, redis.print);
+
     },
 
-    
-    redisGet : function(key,callBack){
-        
-        this.redisClient.get(key, function(err, value) {
-            
-            if(err)
+
+    redisGet: function (key, callBack) {
+
+        this.redisClient.get(key, function (err, value) {
+
+            if (err)
                 console.log(err);
-                
-            if(callBack)
-                callBack(err,JSON.parse(value));
-                
+
+            if (callBack)
+                callBack(err, JSON.parse(value));
+
         });
-        
+
     },
-    
-    redisSaveValue : function(key,value){
-        
+
+    redisSaveValue: function (key, value) {
+
         this.redisClient.set(key, value);
-        
+
     },
 
-    
-    redisGetValue : function(key,callBack){
-        
-        this.redisClient.get(key, function(err, value) {
-            
-            if(callBack)
-                callBack(err,value);
-                
+
+    redisGetValue: function (key, callBack) {
+
+        this.redisClient.get(key, function (err, value) {
+
+            if (callBack)
+                callBack(err, value);
+
         });
-        
+
     },
 
-    redisSaveToHash : function(key,hashKey,value){
-        
-        this.redisClient.hset([key,hashKey,value], redis.print);
+    redisSaveToHash: function (key, hashKey, value) {
 
-        
+        this.redisClient.hset([key, hashKey, value], redis.print);
+
+
     },
 
-    redisSaveToSortedList : function(key,sortkey,value){
-        
-        this.redisClient.zadd([key,value,sortkey], redis.print);
+    redisSaveToSortedList: function (key, sortkey, value) {
 
-        
+        this.redisClient.zadd([key, value, sortkey], redis.print);
+
+
     },
 
-    redisGetSortedList : function(key,offest,limit,callBack){
+    redisGetSortedList: function (key, offest, limit, callBack) {
 
-        var args = [ key, '+inf', '-inf' , 'WITHSCORES', 'LIMIT', offest, limit ];
+        var args = [key, '+inf', '-inf', 'WITHSCORES', 'LIMIT', offest, limit];
         this.redisClient.zrevrangebyscore(args, function (err, response) {
             if (err) {
-                
+
                 console.log(err);
-                
-                if(callBack)
-                    callBack(err,null);
-                
-                return;
-            }
-            
-            if(!_.isArray(response)){
-                
-                callBack("not array",null);
-                
+
+                if (callBack)
+                    callBack(err, null);
+
                 return;
             }
 
-           if(response.length % 2 != 0){
-                
-                callBack("invalid array",null);
-                
+            if (!_.isArray(response)) {
+
+                callBack("not array", null);
+
                 return;
-                
             }
-            
+
+            if (response.length % 2 != 0) {
+
+                callBack("invalid array", null);
+
+                return;
+
+            }
+
             var result = [];
-            
-            for(var i = 0 ; i < response.length ; i += 2){
-                
+
+            for (var i = 0; i < response.length; i += 2) {
+
                 var key = response[i];
-                var value = response[i+1];
-                
+                var value = response[i + 1];
+
                 result[key] = value;
-                
+
             }
-            
-            if(callBack)
-                callBack(err,result);
- 
+
+            if (callBack)
+                callBack(err, result);
+
         });
 
     },
 
-    toObjectId: function(_id) {
+    toObjectId: function (_id) {
 
         if (!_.isEmpty(_id)) return new mongoose.Types.ObjectId(_id);
-         
+
     }
 
 }

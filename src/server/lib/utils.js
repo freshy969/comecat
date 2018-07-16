@@ -347,10 +347,13 @@ var Config = require("./init");
             return new Number(bytes / 1000 / 1000 / 1000).toFixed(2) + " gB";
     }
 
-    const mailgun = require('mailgun-js')({
-        apiKey: Config.mailgunSettings.apykey,
-        domain: Config.mailgunSettings.domain
-    });
+    if(Config.mailgunSettings && 
+        Config.mailgunSettings.apykey && Config.mailgunSettings.domain) {
+        const mailgun = require('mailgun-js')({
+            apiKey: Config.mailgunSettings.apykey,
+            domain: Config.mailgunSettings.domain
+        });
+    }
 
     function sendEmail(to, type, params, cb) {
 

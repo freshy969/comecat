@@ -1,6 +1,12 @@
 # ComeCat
 
-ComeCat is open messegner for team chat and for live chat support.
+ComeCat is open source messenger for team chat and for live chat support. Everything you need for communication is in one place.
+
+## Demo
+
+Please signin from here. You can try all features.
+
+[https://app.come.cat/](https://app.come.cat/)
 
 ## Features
 
