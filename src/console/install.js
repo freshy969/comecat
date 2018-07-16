@@ -11,69 +11,142 @@ var path = require("path");
 
 var DatabaseManager = require('../server/lib/DatabaseManager');
 var UserModel = require('../server/Models/User');
+var OrganizationModel = require('../server/Models/Organization');
 
 var Utils = require('../server/lib/utils');
 var init = require('../server/lib/init');
 var Const = require('../server/lib/consts');
 
-async function generateUser() {
+async function checkFolder() {
 
+    const folderPath = init.uploadPath;
+    const testFile = folderPath + "/test";
 
-    easyimg.thumbnail({
-        src: init.uploadPath + "/" + filename,
-        dst: init.uploadPath + "/" + thumbname + ".png",
-        width: Const.thumbSize, height: Const.thumbSize
-    }).then(
+    if (!fs.existsSync(folderPath)) {
+        return false;
+    }
 
-        function (image) {
+    fs.writeFileSync(testFile, "test");
 
-            fs.renameSync(init.uploadPath + "/" + thumbname + ".png", init.uploadPath + thumbname);
+    if (!fs.existsSync(testFile)) {
+        return false;
+    }
 
-            var model = new userModel({
-                organizationId: organizationId,
-                name: row.first_name + " " + row.last_name,
-                description: row.email,
-                userid: row.username,
-                password: Utils.getHash('yumiko'),
-                status: 1,
-                avatar: {
-                    picture: {
-                        originalName: filename,
-                        size: 1,
-                        mimeType: "image/png",
-                        nameOnServer: filename
-                    },
-                    thumbnail: {
-                        originalName: thumbname,
-                        size: 1,
-                        mimeType: "image/png",
-                        nameOnServer: thumbname
-                    },
-                },
-                created: Utils.now()
-            });
+    fs.unlinkSync(testFile);
 
-            model.save(function (err, modelSaved) {
+    return true;
 
-                if (err)
-                    console.log(err);
+}
 
-                done(err);
+async function generateOrganization() {
 
-            });
+    return new Promise((res, rej) => {
 
-        },
-        function (err) {
+        const model = OrganizationModel.get();
 
-
-
+        if (!init.personamOrganizationName || init.personamOrganizationName == "") {
+            return rej(" Wrong config. Please check personamOrganizationName.")
         }
 
-    );
+        var org = new model({
+            name: init.personamOrganizationName,
+            organizationId: init.personamOrganizationName,
+            sortName: init.personamOrganizationName,
+            created: Utils.now(),
+            maxUserNumber: 1000000,
+            maxGroupNumber: 1000000,
+            maxRoomNumber: 1000000,
+            diskQuota: 1000000,
+            status: 1
+        });
+
+        org.save(function (err, saveResult) {
+
+            var organization = saveResult.toObject();
+            res(organization);
+
+        });
+
+
+    });
+
+}
+async function generateUser(org, username, password, avatarImage) {
+
+    return new Promise((res, rej) => {
+
+        const userModel = UserModel.get();
+
+        const originalImagePath = path.resolve(__dirname + "/../../doc/avatar/" + avatarImage);
+        const thumbname = Utils.getRandomString();
+        const filename = Utils.getRandomString();
+
+        if (!fs.existsSync(originalImagePath)) {
+            rej(avatarImage + " doesnt exists.");
+        }
+
+        // get organization
+
+
+        easyimg.thumbnail({
+            src: originalImagePath,
+            dst: init.uploadPath + "/" + thumbname + ".png",
+            width: Const.thumbSize, height: Const.thumbSize
+        }).then(
+
+            (image) => {
+
+                fs.renameSync(init.uploadPath + "/" + thumbname + ".png", init.uploadPath + thumbname);
+                fs.copySync(init.uploadPath + thumbname, init.uploadPath + filename);
+
+                var model = new userModel({
+                    organizationId: org._id.toString(),
+                    name: username,
+                    description: "",
+                    userid: username,
+                    password: Utils.getHash(password),
+                    status: 1,
+                    avatar: {
+                        picture: {
+                            originalName: filename,
+                            size: 1,
+                            mimeType: "image/png",
+                            nameOnServer: filename
+                        },
+                        thumbnail: {
+                            originalName: thumbname,
+                            size: 1,
+                            mimeType: "image/png",
+                            nameOnServer: thumbname
+                        },
+                    },
+                    created: Utils.now()
+                });
+
+                model.save((err, modelSaved) => {
+
+                    if (err)
+                        rej('faild to create user');
+
+                    res(modelSaved);
+
+                });
+
+            },
+            (err) => {
+
+
+
+            }
+
+        );
+
+    })
 
 }
 async function scanfPassword() {
 
+    console.log('OK Lets create admin user first.')
     process.stdout.write("Please input admin password > ".green);
 
     const password = scanf('%s');
@@ -102,7 +175,7 @@ async function connectDB() {
 
             if (!success) {
 
-                rej('Failed to connect DB');
+                rej("failed to connect db");
 
             } else {
 
@@ -113,6 +186,7 @@ async function connectDB() {
         });
 
     });
+
 }
 
 // main
@@ -123,20 +197,92 @@ async function connectDB() {
     console.log('Welcome to comecat installer'.rainbow);
     console.log('-------------------------------'.rainbow);
     console.log('\n');
+    console.log('This installer does following things.');
+    console.log('1. Check Database and upload folder permission.');
+    console.log('2. Create organization.');
+    console.log('3. Create admin user.');
+    console.log('4. Create user for chatbot message.');
+    console.log('\n');
 
-    await connectDB();
+    try {
+        await connectDB();
+    } catch (e) {
+        console.error(e);
+        console.error('Failed to connect DB.Please check datebase settings in src/server/lib/init.js.'.red);
+        process.exit(1);
+    }
+    console.log('Database connection -- OK .'.yellow);
+
+
+    let org = null;
+
+    try {
+        org = await generateOrganization()
+    } catch (e) {
+        console.error(e.red);
+        process.exit(1);
+    }
+
+    // check upload folder permission
+    const folderWritable = await checkFolder();
+    if (!folderWritable) {
+        console.error('Check upload folder permission.'.red);
+        process.exit(1);
+    }
+    console.log('Upload folder write permission -- OK .'.yellow);
+    console.log('');
+
     const adminPassword = await scanfPassword();
 
     process.stdout.write("Your password is ".green);
     process.stdout.write(adminPassword + "\n\n");
 
     process.stdout.write('Generating admin...'.green);
-    process.stdout.write('Done !'.green);
+
+    let adminUser = null;
+    try {
+        adminUser = await generateUser(org, "admin", adminPassword, "thecat.png");
+    } catch (e) {
+        console.error(e.red);
+        process.exit(1);
+    }
+
+    console.log('Done !'.green);
+    console.log('Your admin credential is ');
+    console.log('  User Name :'.green + "admin".white);
+    console.log('  Password :'.green + adminPassword.white);
+
+    console.log('');
+
+    process.stdout.write('Generating robot user...'.green);
+
+    let robotUser = null;
+    try {
+        robotUser = await generateUser(org, "robot", "robot", "robocat.png");
+    } catch (e) {
+        console.error(e.red);
+        process.exit(1);
+    }
+
+    console.log('Done !'.green);
+    console.log('Your robot user account is generated.');
+    console.log('');
+
+    console.log('Editing config file...'.green);
+
+    const initFilePath = path.resolve(__dirname + '/../server/lib/init.js');
+    let contents = fs.readFileSync(initFilePath, 'utf8');
+
+    contents = contents.replace(/Config.robotUserId = ""/, 'Config.robotUserId = "' + robotUser._id.toString() + '"');
+    contents = contents.replace(/Config.personalAccountAdminId = ""/, 'Config.personalAccountAdminId = "' + adminUser._id.toString() + '"');
+
+    fs.writeFileSync(initFilePath, contents, 'utf8');
+    console.log('Done !'.green);
+
+    process.exit(0);
 
 
 
 
-
-    process.exit(1);
 
 })();
