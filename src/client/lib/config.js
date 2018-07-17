@@ -13,7 +13,7 @@ export const APIEndpoint = serverBase + "api/v2";
 export const SignalingServerURL = serverBase;
 export const SpikaBaseURL = "spika";
 export const defaultContaier = "body";
-export const socketUrl = serverBase + "/spikaenterprise";
+export const socketUrl = "/";
 export const SpikaSocketURL = "/spika";
 
 export const phoneNumberSignin = false;

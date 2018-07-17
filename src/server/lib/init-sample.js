@@ -38,7 +38,7 @@ Config.hashSalt = "8zgqvU6LaziThJI1uz3PevYd";
 Config.publicPath = path.resolve(__dirname, "../../..", "public");
 Config.uploadPath = path.resolve(__dirname, "../../..", "public/uploads/");
 
-Config.socketNameSpace = '/spikaenterprise';
+Config.socketNameSpace = '/';
 Config.defaultAvatar = "/img/noname.png";
 Config.defaultAvatarGroup = "/img/noname-group.png";
 

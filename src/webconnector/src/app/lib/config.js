@@ -4,7 +4,7 @@
 export const baseURL = "/";
 export const SpikaAPIKey = "GtZX9bkKKiWpJKauL06ugOCZS2BwrJEY";
 
-export const SpikaWebSocketURL = '/spikaenterprise';
+export const SpikaWebSocketURL = '/';
 
 // -------------------- options
 
