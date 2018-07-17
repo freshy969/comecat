@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import spikaSignUp from '../assets/img/';
+import comecatSignUp from '../assets/img/comecatLogin';
 import signupPic from '../assets/img/signupPic.jpg';
 import * as actions from '../actions';
 
@@ -59,7 +59,7 @@ class SignUp extends Component {
 
                     <div className="row h-100 pl-50">
                         <div className="col-md-10 col-lg-8 align-self-end">
-                            <img src={spikaSignUp} alt="..." />
+                            <img src={comecatSignUp} alt="..." />
                             <br />
                             <h4 className="text-white">{strings.SignUpTitle1[user.lang]}</h4>
                             <p className="text-white">
