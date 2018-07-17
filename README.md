@@ -146,7 +146,7 @@ mkdir public/uploads
 
 Run installer
 ```
-node src/console/installer.js
+node src/console/install.js
 ```
 
 Start server
