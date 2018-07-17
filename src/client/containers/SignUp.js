@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import comecatSignUp from '../assets/img/comecatLogin';
+import comecatSignUp from '../assets/img/comecatLogin.png';
 import signupPic from '../assets/img/signupPic.jpg';
 import * as actions from '../actions';
 
