@@ -148,6 +148,7 @@ async function generateUser(org, username, password, avatarImage) {
                     userid: username,
                     password: Utils.getHash(password),
                     status: 1,
+                    isGuest: 0,
                     avatar: {
                         picture: {
                             originalName: filename,

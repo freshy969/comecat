@@ -74,12 +74,8 @@ UserController.prototype.init = function (app) {
         var criteria = {
             isGuest: { $ne: 1 }
         };
-        criteria.organizationId = organizationId;
 
-        if (!organizationAdmin) {
-            criteria.groups = { $in: baseUser.groups };
-            criteria._id = { $ne: baseUser._id };
-        }
+        criteria.organizationId = organizationId;
 
         if (!_.isEmpty(keyword)) {
             criteria.name = new RegExp('^.*' + Utils.escapeRegExp(keyword) + '.*$', "i");
@@ -92,7 +88,7 @@ UserController.prototype.init = function (app) {
                 var result = {};
 
                 // get all groups by organization id
-                modelGroup.find({ organizationId: organizationId }, { name: true, type: true }, function (err, findGroups) {
+                modelGroup.find({ organizationId: organizationId, isGuest: { $ne: 1 } }, { name: true, type: true }, function (err, findGroups) {
 
                     if (organizationAdmin && !_.isEmpty(showUsersWithoutDepartments)) {
                         var departments = _.filter(findGroups, { type: Const.groupType.department });
