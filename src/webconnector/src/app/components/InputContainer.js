@@ -66,6 +66,7 @@ class InputContainer extends Component {
 
     render() {
         return <div className="input-container row">
+
             <div className="input-col col-md-12">
 
                 <input

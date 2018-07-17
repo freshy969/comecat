@@ -177,7 +177,7 @@ cd src/webconnector/
 ```
 
 ```
-npm install gulp
+npm install
 ```
 
 ```

@@ -12,10 +12,12 @@ var path = require("path");
 var DatabaseManager = require('../server/lib/DatabaseManager');
 var UserModel = require('../server/Models/User');
 var OrganizationModel = require('../server/Models/Organization');
+var APIKeyModel = require('../server/Models/APIKey');
 
 var Utils = require('../server/lib/utils');
 var init = require('../server/lib/init');
 var Const = require('../server/lib/consts');
+
 
 async function checkFolder() {
 
@@ -114,6 +116,36 @@ async function generateOrganization() {
     });
 
 }
+
+async function generateAPIKey(org) {
+
+    return new Promise((res, rej) => {
+
+        const model = APIKeyModel.get();
+        const newAPIKey = Utils.getRandomString(Const.APIKeyLength);
+
+        // save API key
+        var apikey = new model({
+            organizationId: org._id.toString(),
+            key: newAPIKey,
+            state: 1,
+            created: Utils.now()
+        });
+
+        // save to DB          
+        apikey.save(function (err, saveResult) {
+
+            if (err)
+                return rej(err);
+
+            var apikey = saveResult.toObject();
+            res(apikey);
+        });
+
+    });
+
+}
+
 async function generateUser(org, username, password, avatarImage) {
 
     return new Promise((res, rej) => {
@@ -245,6 +277,7 @@ async function connectDB() {
     console.log('2. Create organization.');
     console.log('3. Create admin user.');
     console.log('4. Create user for chatbot message.');
+    console.log('5. Create global API key and change cofiguration for web connector.');
     console.log('\n');
 
     try {
@@ -338,10 +371,25 @@ async function connectDB() {
     fs.writeFileSync(initFilePath, contents, 'utf8');
     console.log('Done !'.green);
 
+
+    console.log('Generating api key... ');
+    let apiKey = "";
+    try {
+        apikey = await generateAPIKey(org);
+    } catch (e) {
+        console.error(e.red);
+        process.exit(1);
+    }
+
+
+    console.log('Editing config file...'.green);
+    const initFilePath2 = path.resolve(__dirname + '/../webconnector/src/app/lib/config.js');
+    let contents2 = fs.readFileSync(initFilePath2, 'utf8');
+    contents2 = contents2.replace(/SpikaAPIKey = ""/, 'SpikaAPIKey = "' + apikey.key + '"');
+    fs.writeFileSync(initFilePath2, contents2, 'utf8');
+    console.log('Done !'.green);
+
+
     process.exit(0);
-
-
-
-
 
 })();

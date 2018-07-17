@@ -31,13 +31,13 @@ class ConnectorWeb extends Component {
         let defaultHomepageConnectorURL = "";
 
         if (this.props.defaultConnector) {
-            defaultHomepageConnectorURL = config.serverBase + "/c/?c=" + this.props.defaultConnector.webhookIdentifier;
+            defaultHomepageConnectorURL = util.getBaseURL() + "/c/?c=" + this.props.defaultConnector.webhookIdentifier;
         }
 
         let defaultWebConnectorJS = "";
 
         if (this.props.defaultConnector) {
-            const defaultWebConnectorURL = config.serverBase + "/c/l/loader.js?code=" + this.props.defaultConnector.webhookIdentifier;
+            const defaultWebConnectorURL = util.getBaseURL() + "/c/l/loader.js?code=" + this.props.defaultConnector.webhookIdentifier;
             defaultWebConnectorJS = `<script type="text/javascript" id="comecat" src="${defaultWebConnectorURL}" ></script>`;
         }
 

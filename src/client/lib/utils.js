@@ -207,3 +207,8 @@ export function getDateTime() {
     return y + m + date + h + min + s;
 
 }
+
+export function getBaseURL() {
+    const baseURL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
+    return baseURL;
+}
