@@ -5,12 +5,7 @@ import { Link } from 'react-router-dom';
 
 import * as constant from '../../lib/const';
 import * as actions from '../../actions';
-import * as string from '../../lib/strings';
 
-import user from '../../lib/user';
-
-import spikaLogin from '../../assets/img/spikaLogin.png';
-import loginPic from '../../assets/img/loginPic.jpg';
 
 import AvatarImage from '../AvatarImage';
 
@@ -20,23 +15,23 @@ class IncomingCallDialog extends Component {
     }
 
     render() {
-        
+
         const mainStyle = {
             display: 'none'
         }
 
-        if(this.props.showIncomingCall && !this.props.calling)
+        if (this.props.showIncomingCall && !this.props.calling)
             mainStyle.display = 'block';
 
         let fileId = null;
-        
-        if(this.props.user && this.props.user.avatar && this.props.user.avatar.thumbnail)
+
+        if (this.props.user && this.props.user.avatar && this.props.user.avatar.thumbnail)
             fileId = this.props.user.avatar.thumbnail.nameOnServer;
-            
+
         return (
 
             <div className="modal-open">
-            
+
                 <div className="modal modal-center fade show" id="modal-center" tabIndex="-1" style={mainStyle}>
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -66,7 +61,7 @@ class IncomingCallDialog extends Component {
                     </div>
                 </div>
 
-                {this.props.showIncomingCall && !this.props.calling ? <div className="modal-backdrop fade show"></div>:null }
+                {this.props.showIncomingCall && !this.props.calling ? <div className="modal-backdrop fade show"></div> : null}
 
             </div>
         );

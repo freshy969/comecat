@@ -128,7 +128,7 @@ git clone https://github.com/cloverstudio/comecat.git
 ```
 
 ```
-cd comecat_server
+cd comecat
 ```
 
 ```
@@ -139,6 +139,17 @@ npm install
 cp src/server/lib/init-sample.js src/server/lib/init.js
 ```
 
+Create upload folder
+```
+mkdir public/uploads
+```
+
+Run installer
+```
+node src/console/installer.js
+```
+
+Start server
 ```
 node src/server/main.js
 ```

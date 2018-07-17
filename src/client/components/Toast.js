@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../actions';
 
-import spikaLogin from '../assets/img/spikaLogin.png';
-import loginPic from '../assets/img/loginPic.jpg';
 
 class Toast extends Component {
 
@@ -13,10 +11,10 @@ class Toast extends Component {
     }
 
     render() {
-        
+
         let mainClass = "toast";
 
-        if(this.props.showing)
+        if (this.props.showing)
             mainClass += " reveal";
 
         return (
@@ -30,9 +28,9 @@ class Toast extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        showing:state.toast.showing,
-        message:state.toast.message,
-        callBack:state.toast.callback
+        showing: state.toast.showing,
+        message: state.toast.message,
+        callBack: state.toast.callback
     };
 };
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import spikaSignUp from '../assets/img/spikaLogin.png';
+import comecatLogin from '../assets/img/comecatLogin.png';
 import signupPic from '../assets/img/signupPic.jpg';
 import * as actions from '../actions';
 
@@ -40,7 +40,7 @@ class ForgetPassword extends Component {
 
                     <div className="row h-100 pl-50">
                         <div className="col-md-10 col-lg-8 align-self-end">
-                            <img src={spikaSignUp} alt="..." />
+                            <img src={comecatLogin} alt="..." />
                             <br />
                             <h4 className="text-white">{strings.SignUpTitle1[user.lang]}</h4>
                             <p className="text-white">
